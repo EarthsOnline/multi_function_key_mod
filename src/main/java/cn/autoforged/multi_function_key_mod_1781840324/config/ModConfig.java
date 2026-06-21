@@ -8,13 +8,9 @@ import java.util.List;
 public class ModConfig {
     public static class Client {
         public final ModConfigSpec.ConfigValue<List<? extends String>> boundActions;
-        public final ModConfigSpec.ConfigValue<String> mulkKeyName;
 
         Client(ModConfigSpec.Builder builder) {
             builder.push("general");
-            mulkKeyName = builder
-                    .comment("MULK key identifier. Default: key.keyboard.left.control")
-                    .define("mulkKey", "key.keyboard.left.control");
             boundActions = builder
                     .comment("List of key mapping names bound to MULK")
                     .defineListAllowEmpty("boundActions", List.of(), s -> s instanceof String);

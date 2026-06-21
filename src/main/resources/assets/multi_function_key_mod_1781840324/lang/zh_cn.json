@@ -9,5 +9,6 @@
     "mulk.action.unbind": "解绑",
     "mulk.add_action.title": "点击选择一个操作添加到 MulK",
     "mulk.add_action.bound": "已绑定",
+    "key.mulk": "MulK",
     "key.categories.multifunction": "多功能按键"
 }

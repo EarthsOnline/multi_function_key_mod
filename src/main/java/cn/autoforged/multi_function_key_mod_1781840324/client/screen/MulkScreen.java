@@ -121,11 +121,7 @@ public class MulkScreen extends Screen {
                 return true;
             }
             InputConstants.Key newKey = InputConstants.getKey(keyCode, scanCode);
-            String keyName = newKey.getName();
-            ModConfigSpec.ConfigValue<String> configKey = ModConfig.CLIENT.mulkKeyName;
-            configKey.set(keyName);
-            configKey.save();
-            ModClientEvents.resetMulkKey();
+            ModClientEvents.MULK_KEY.setKey(newKey);
             isWaitingForKey = false;
             rebuildWidgets();
             return true;
@@ -281,8 +277,11 @@ public class MulkScreen extends Screen {
     }
 
     @Override
+    public void renderBackground(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    }
+
+    @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
-        renderTransparentBackground(gui);
         gui.fill(0, 0, width, height, 0xC0101010);
 
         Component title = Component.translatable("mulk.screen.title");

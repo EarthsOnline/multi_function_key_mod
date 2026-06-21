@@ -2,8 +2,8 @@ package cn.autoforged.multi_function_key_mod_1781840324.client;
 
 import cn.autoforged.multi_function_key_mod_1781840324.MainMod;
 import cn.autoforged.multi_function_key_mod_1781840324.client.screen.MulkScreen;
-import cn.autoforged.multi_function_key_mod_1781840324.config.ModConfig;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,20 +13,18 @@ import org.lwjgl.glfw.GLFW;
 
 @EventBusSubscriber(modid = MainMod.MODID, value = Dist.CLIENT)
 public class ModClientEvents {
+    public static final KeyMapping MULK_KEY = new KeyMapping(
+            "key.mulk",
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_RIGHT_CONTROL,
+            "key.categories.multifunction"
+    );
+
     private static boolean mulkWasDown = false;
     private static boolean otherKeyPressed = false;
-    private static InputConstants.Key mulkKey = null;
 
     private static InputConstants.Key getMulkKey() {
-        if (mulkKey == null) {
-            String name = ModConfig.CLIENT.mulkKeyName.get();
-            mulkKey = InputConstants.getKey(name);
-        }
-        return mulkKey;
-    }
-
-    public static void resetMulkKey() {
-        mulkKey = null;
+        return MULK_KEY.getKey();
     }
 
     @SubscribeEvent
