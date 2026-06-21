@@ -1,0 +1,13 @@
+{
+    "mulk.screen.title": "Multi-Function Key (MulK)",
+    "mulk.button.cancel": "Cancel",
+    "mulk.button.change_key": "Change Key",
+    "mulk.button.add_action": "Add Action",
+    "mulk.button.waiting": "Press a key...",
+    "mulk.prompt.press_key": "Press the new multi-function key...",
+    "mulk.action.execute": "Execute",
+    "mulk.action.unbind": "Unbind",
+    "mulk.add_action.title": "Click an action to add to MulK",
+    "mulk.add_action.bound": "Bound",
+    "key.categories.multifunction": "Multi-Function Key"
+}

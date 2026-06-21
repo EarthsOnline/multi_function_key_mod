@@ -1,0 +1,13 @@
+{
+    "mulk.screen.title": "多功能按键 (MulK)",
+    "mulk.button.cancel": "取消",
+    "mulk.button.change_key": "修改按键",
+    "mulk.button.add_action": "添加操作",
+    "mulk.button.waiting": "按下按键...",
+    "mulk.prompt.press_key": "请按下新的多功能按键...",
+    "mulk.action.execute": "触发",
+    "mulk.action.unbind": "解绑",
+    "mulk.add_action.title": "点击选择一个操作添加到 MulK",
+    "mulk.add_action.bound": "已绑定",
+    "key.categories.multifunction": "多功能按键"
+}
