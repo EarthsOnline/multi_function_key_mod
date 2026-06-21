@@ -10,5 +10,6 @@
     "mulk.add_action.title": "Click an action to add to MulK",
     "mulk.add_action.bound": "Bound",
     "key.mulk": "MulK",
-    "key.categories.multifunction": "Multi-Function Key"
+    "key.categories.multifunction": "Multi-Function Key",
+    "mulk.action.triggered": "%s has been triggered."
 }

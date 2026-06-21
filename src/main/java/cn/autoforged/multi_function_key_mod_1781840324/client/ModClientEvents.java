@@ -2,6 +2,7 @@ package cn.autoforged.multi_function_key_mod_1781840324.client;
 
 import cn.autoforged.multi_function_key_mod_1781840324.MainMod;
 import cn.autoforged.multi_function_key_mod_1781840324.client.screen.MulkScreen;
+import cn.autoforged.multi_function_key_mod_1781840324.config.ModConfig;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -10,6 +11,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.InputEvent;
 import org.lwjgl.glfw.GLFW;
+import java.lang.reflect.Field;
 
 @EventBusSubscriber(modid = MainMod.MODID, value = Dist.CLIENT)
 public class ModClientEvents {
@@ -22,6 +24,42 @@ public class ModClientEvents {
 
     private static boolean mulkWasDown = false;
     private static boolean otherKeyPressed = false;
+
+    private static final Field CLICK_COUNT;
+
+    static {
+        Field f;
+        try {
+            f = KeyMapping.class.getDeclaredField("clickCount");
+            f.setAccessible(true);
+        } catch (NoSuchFieldException e) {
+            f = null;
+        }
+        CLICK_COUNT = f;
+    }
+
+    public static void incrementClickCount(KeyMapping mapping) {
+        if (CLICK_COUNT == null) return;
+        try {
+            CLICK_COUNT.setInt(mapping, CLICK_COUNT.getInt(mapping) + 1);
+        } catch (IllegalAccessException ignored) {
+        }
+    }
+
+    private static void resetBoundActionsClickCount(Minecraft mc) {
+        if (CLICK_COUNT == null) return;
+        for (String name : ModConfig.CLIENT.boundActions.get()) {
+            for (KeyMapping km : mc.options.keyMappings) {
+                if (km.getName().equals(name)) {
+                    try {
+                        CLICK_COUNT.setInt(km, 0);
+                    } catch (IllegalAccessException ignored) {
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     private static InputConstants.Key getMulkKey() {
         return MULK_KEY.getKey();
@@ -53,6 +91,8 @@ public class ModClientEvents {
                 if (event.getAction() == GLFW.GLFW_PRESS) {
                     mulkWasDown = true;
                     otherKeyPressed = false;
+                    resetBoundActionsClickCount(mc);
+                    event.setCanceled(true);
                 } else if (event.getAction() == GLFW.GLFW_RELEASE && mulkWasDown) {
                     mulkWasDown = false;
                     if (!otherKeyPressed) {
@@ -72,6 +112,7 @@ public class ModClientEvents {
             if (event.getAction() == GLFW.GLFW_PRESS) {
                 mulkWasDown = true;
                 otherKeyPressed = false;
+                resetBoundActionsClickCount(mc);
             } else if (event.getAction() == GLFW.GLFW_RELEASE && mulkWasDown) {
                 mulkWasDown = false;
                 if (!otherKeyPressed) {

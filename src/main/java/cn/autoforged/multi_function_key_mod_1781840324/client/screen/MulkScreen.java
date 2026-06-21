@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.client.settings.KeyModifier;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import org.lwjgl.glfw.GLFW;
 
@@ -240,7 +241,14 @@ public class MulkScreen extends Screen {
     }
 
     private void executeAction(BoundActionEntry entry) {
-        KeyMapping.click(entry.mapping.getKey());
+        ModClientEvents.incrementClickCount(entry.mapping);
+        Minecraft mc = Minecraft.getInstance();
+        if (mc.player != null) {
+            mc.player.displayClientMessage(
+                    Component.translatable("mulk.action.triggered", Component.translatable(entry.mapping.getName())),
+                    false
+            );
+        }
         onClose();
     }
 
@@ -248,6 +256,7 @@ public class MulkScreen extends Screen {
         List<String> current = new ArrayList<>(ModConfig.CLIENT.boundActions.get());
         current.remove(entry.mapping.getName());
         setBoundActions(current);
+        entry.mapping.setKeyModifierAndCode(entry.mapping.getDefaultKeyModifier(), entry.mapping.getDefaultKey());
         entries.remove(entry);
         recalcScroll();
         rebuildWidgets();
@@ -259,7 +268,16 @@ public class MulkScreen extends Screen {
             current.add(name);
             setBoundActions(current);
         }
-        loadBoundActions();
+        Minecraft mc = Minecraft.getInstance();
+        for (KeyMapping km : mc.options.keyMappings) {
+            if (km.getName().equals(name)) {
+                km.setKeyModifierAndCode(KeyModifier.NONE, ModClientEvents.MULK_KEY.getKey());
+                if (!isAlreadyBound(km)) {
+                    entries.add(new BoundActionEntry(km));
+                }
+                break;
+            }
+        }
         recalcScroll();
     }
 
